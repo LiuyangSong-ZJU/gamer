@@ -15,3 +15,9 @@ GAMER_ExtractProfile
 src/Makefile
 src/Makefile.log
 src/.local_settings
+
+.idea/
+configs
+envDCU.sh
+envGPU.sh
+bin
