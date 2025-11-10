@@ -24,5 +24,7 @@ envGPU.sh
 MUSIC
 
 include/Typedef.h
-src/TestProblem
+src/TestProblem/**
 src/Init/Init_TestProb.cpp
+
+configs
