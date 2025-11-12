@@ -85,7 +85,8 @@ class LB_GlobalPatch;
 class LB_GlobalTree;
 
 // Hydrodynamics
-void CPU_FluidSolver( real h_Flu_Array_In[][FLU_NIN][ CUBE(FLU_NXT) ],
+void CPU_FluidSolver( const int lv, // *** 新增传入参数 ***
+                      real h_Flu_Array_In[][FLU_NIN][ CUBE(FLU_NXT) ],
                       real h_Flu_Array_Out[][FLU_NOUT][ CUBE(PS2) ],
                       real h_Mag_Array_In[][NCOMP_MAG][ FLU_NXT_P1*SQR(FLU_NXT) ],
                       real h_Mag_Array_Out[][NCOMP_MAG][ PS2P1*SQR(PS2) ],

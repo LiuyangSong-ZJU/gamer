@@ -614,7 +614,7 @@ void Aux_Check_Parameter()
 #  endif
 
 #  ifdef MHD
-      Aux_Error( ERROR_INFO, "MHD doesn't support COMOVING yet !!\n" );
+      // Aux_Error( ERROR_INFO, "MHD doesn't support COMOVING yet !!\n" );
 #  endif
 
 

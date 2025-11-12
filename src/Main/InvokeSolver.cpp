@@ -585,7 +585,8 @@ void Solver( const Solver_t TSolver, const int lv, const double TimeNew, const d
                                  JEANS_MIN_PRES, JeansMinPres_Coeff,
                                  GPU_NSTREAM, UseWaveFlag );
 #        else
-         CPU_FluidSolver       ( h_Flu_Array_F_In[ArrayID], h_Flu_Array_F_Out[ArrayID],
+         CPU_FluidSolver       ( lv, // ***新增传入参数***
+                                 h_Flu_Array_F_In[ArrayID], h_Flu_Array_F_Out[ArrayID],
                                  h_Mag_Array_F_In[ArrayID], h_Mag_Array_F_Out[ArrayID],
                                  h_DE_Array_F_Out[ArrayID], h_Flux_Array[ArrayID], h_Ele_Array[ArrayID],
                                  h_Corner_Array_F[ArrayID], h_Pot_Array_USG_F[ArrayID],
