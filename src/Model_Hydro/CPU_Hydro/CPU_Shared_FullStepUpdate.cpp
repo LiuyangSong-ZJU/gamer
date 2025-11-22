@@ -25,7 +25,8 @@
 #else // #ifdef __CUDACC__
 
 #if ( FLU_SCHEME == MHM  ||  FLU_SCHEME == MHM_RP )
-void Hydro_AddSourceTerm_CCVar_FullStep( const real g_PriVar_Half[][ CUBE(FLU_NXT) ],
+void Hydro_AddSourceTerm_CCVar_FullStep( const real a_in, const real da_in, const real dt_in, //***添加参数***
+                                         const real g_PriVar_Half[][ CUBE(FLU_NXT) ],
                                          real OutCell[], const int idx_hf, const int didx_hf[3],
                                          const real dt_dh, const EoS_t *EoS );
 #endif
@@ -71,7 +72,8 @@ void Hydro_AddSourceTerm_CCVar_FullStep( const real g_PriVar_Half[][ CUBE(FLU_NX
 //                MinMod_MaxIter    : Maximum number of iterations to reduce the min-mod coefficient (i.e., MINMOD_MAX_ITER)
 //-------------------------------------------------------------------------------------------------------
 GPU_DEVICE
-void Hydro_FullStepUpdate( const real g_Input[][ CUBE(FLU_NXT) ], const real g_Half_Pri[][ CUBE(FLU_NXT) ],
+void Hydro_FullStepUpdate( const real a, const real da, //***添加参数 a(Time), da(dTime) ***/
+                           const real g_Input[][ CUBE(FLU_NXT) ], const real g_Half_Pri[][ CUBE(FLU_NXT) ],
                            real g_Output[][ CUBE(PS2) ], char g_DE_Status[], const real g_FC_B[][ PS2P1*SQR(PS2) ],
                            const real g_Flux[][NCOMP_TOTAL_PLUS_MAG][ CUBE(N_FC_FLUX) ], const real dt,
                            const real dh, const real MinDens, const real MinEint, const real DualEnergySwitch,
@@ -137,9 +139,21 @@ void Hydro_FullStepUpdate( const real g_Input[][ CUBE(FLU_NXT) ], const real g_H
       for (int v=0; v<NCOMP_TOTAL; v++)
          Output_1Cell[v] = g_Input[v][idx_in] - dt_dh*( dFlux[0][v] + dFlux[1][v] + dFlux[2][v] );
 
+
+
+// printf("FullStepUpdate BEFORE: Output_1Cell ptr=%p ENGY=%d value=%.12e sizeof(real)=%zu\n",
+//        (void*)Output_1Cell, (int)ENGY, (double)Output_1Cell[ENGY], sizeof(real));
+
+
+// 在 AddSourceTerm 前后分别打印能量项
 #     if ( FLU_SCHEME == MHM  ||  FLU_SCHEME == MHM_RP )
-      Hydro_AddSourceTerm_CCVar_FullStep( g_Half_Pri, Output_1Cell, idx_hf, didx_hf, dt_dh, EoS );
+      Hydro_AddSourceTerm_CCVar_FullStep( a, da, dt, //***添加参数***
+                                          g_Half_Pri, Output_1Cell, idx_hf, didx_hf, dt_dh, EoS );
 #     endif
+// printf("FullStepUpdate AFTER : Output_1Cell ptr=%p ENGY=%d value=%.12e sizeof(real)=%zu\n\n",
+//        (void*)Output_1Cell, (int)ENGY, (double)Output_1Cell[ENGY], sizeof(real));
+
+
 
 
 //    compute magnetic energy for later usage

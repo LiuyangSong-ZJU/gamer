@@ -46,7 +46,8 @@ void Init_Unit()
    UNIT_E    = -1.0;
    UNIT_P    = -1.0;
 #  ifdef MHD
-#  warning : ERROR : MHD is not supported here !!!
+   UNIT_B = sqrt( UNIT_P*4.0*M_PI );
+   if ( MPI_Rank == 0 )    Aux_Message( stdout, "NOTE : UNIT_B is set to %13.7e\n", UNIT_B );
 #  endif
 
    if ( MPI_Rank == 0 )
