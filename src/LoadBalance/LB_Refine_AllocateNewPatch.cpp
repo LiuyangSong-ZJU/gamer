@@ -1092,7 +1092,8 @@ int AllocateSonPatch( const int FaLv, const int *Cr, const int PScale, const int
 //    compute magnetic energy
 #     ifdef MHD
       const real Emag = MHD_GetCellCenteredBEnergy( FData_Mag[MAGX], FData_Mag[MAGY], FData_Mag[MAGZ],
-                                                    PS2, PS2, PS2, i, j, k );
+                                                    PS2, PS2, PS2, i, j, k,
+                                                    Time[SonLv] ); //TODO: check
 #     else
       const real Emag = NULL_REAL;
 #     endif

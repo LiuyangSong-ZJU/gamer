@@ -78,7 +78,8 @@ void Hydro_FullStepUpdate( const real a, const real da, //***添加参数 a(Time
                            const real g_Flux[][NCOMP_TOTAL_PLUS_MAG][ CUBE(N_FC_FLUX) ], const real dt,
                            const real dh, const real MinDens, const real MinEint, const real DualEnergySwitch,
                            const bool NormPassive, const int NNorm, const int NormIdx[], const EoS_t *EoS,
-                           int *s_FullStepFailure, const int Iteration, const int MinMod_MaxIter )
+                           int *s_FullStepFailure, const int Iteration, const int MinMod_MaxIter,
+                           const int lv )
 {
 
    const int  didx_flux[3]    = { 1, N_FL_FLUX, SQR(N_FL_FLUX) };
@@ -160,7 +161,7 @@ void Hydro_FullStepUpdate( const real a, const real da, //***添加参数 a(Time
 //    --> B field must be updated before calling Hydro_FullStepUpdate()
 #     ifdef MHD
       Emag = MHD_GetCellCenteredBEnergy( g_FC_B[MAGX], g_FC_B[MAGY], g_FC_B[MAGZ],
-                                         PS2, PS2, PS2, i_out, j_out, k_out );
+                                         PS2, PS2, PS2, i_out, j_out, k_out, Time[lv] );
 #     else
       Emag = NULL_REAL;
 #     endif

@@ -252,7 +252,8 @@ void Temperature_DerivedFunc( const int list_len, const long *list_gid, const ch
 //       get Emag
 #        ifdef MHD
          Emag = MHD_GetCellCenteredBEnergy( MagData[MAGX], MagData[MAGY], MagData[MAGZ],
-                                            Dimensions[0], Dimensions[1], Dimensions[2], i, j, k );
+                                            Dimensions[0], Dimensions[1], Dimensions[2], i, j, k,
+                                            Time[lv] );
 #        else
          Emag = NULL_REAL;
 #        endif

@@ -71,7 +71,8 @@ void Hydro_FullStepUpdate( const real a, const real da, //***添加参数 a(Time
                            const real g_Flux[][NCOMP_TOTAL_PLUS_MAG][ CUBE(N_FC_FLUX) ], const real dt,
                            const real dh, const real MinDens, const real MinEint, const real DualEnergySwitch,
                            const bool NormPassive, const int NNorm, const int NormIdx[], const EoS_t *EoS,
-                           int *s_FullStepFailure, const int Iteration, const int MinMod_MaxIter );
+                           int *s_FullStepFailure, const int Iteration, const int MinMod_MaxIter,
+                           const int level );
 #if ( RSOLVER == EXACT  ||  RSOLVER_RESCUE == EXACT )
 void Hydro_RiemannSolver_Exact( const int XYZ, real Flux_Out[], const real L_In[], const real R_In[],
                                 const real MinDens, const real MinPres, const EoS_DE2P_t EoS_DensEint2Pres,
@@ -335,7 +336,8 @@ void CPU_FluidSolver_MHM(
    const bool NormPassive, const int NNorm, const int c_NormIdx[],
    const bool FracPassive, const int NFrac, const int c_FracIdx[],
    const bool JeansMinPres, const real JeansMinPres_Coeff,
-   const EoS_t EoS, const MicroPhy_t MicroPhy )
+   const EoS_t EoS, const MicroPhy_t MicroPhy,
+   const int level )
 #endif // #ifdef __CUDACC__ ... else ...
 {
 
@@ -599,7 +601,8 @@ void CPU_FluidSolver_MHM(
             Hydro_FullStepUpdate( Time, dTime, //***添加参数 a(Time), da(dTime) ***/
                                   g_Flu_Array_In[P], g_PriVar_Half_1PG, g_Flu_Array_Out[P], g_DE_Array_Out[P],
                                   g_Mag_Array_Out[P], g_FC_Flux_1PG, dt, dh, MinDens, MinEint, DualEnergySwitch,
-                                  NormPassive, NNorm, c_NormIdx, &EoS, &s_FullStepFailure, Iteration, MinMod_MaxIter );
+                                  NormPassive, NNorm, c_NormIdx, &EoS, &s_FullStepFailure, Iteration, MinMod_MaxIter,
+                                  level );
 
 //          add the cosmic-ray source term of adiabatic work
 #           ifdef COSMIC_RAY

@@ -1274,7 +1274,9 @@ real Hydro_Con2Eint( const real Dens, const real MomX, const real MomY, const re
 //###NOTE: assuming Etot = Eint + Ekin + Emag
    Eint    = Engy - (real)0.5*( SQR(MomX) + SQR(MomY) + SQR(MomZ) ) / Dens;
 #  ifdef MHD
+printf( "减去磁能前Emag = %f\n", Emag );
    Eint   -= Emag;
+printf( "减去磁能后Eint = %f\n", Eint );
 #  endif
 #  endif // #ifdef SRHD ... else ...
 
@@ -1669,7 +1671,8 @@ void MHD_GetCellCenteredBField( real B_CC[], const real Bx_FC[], const real By_F
 //-------------------------------------------------------------------------------------------------------
 GPU_DEVICE
 real MHD_GetCellCenteredBEnergy( const real Bx_FC[], const real By_FC[], const real Bz_FC[],
-                                 const int Nx, const int Ny, const int Nz, const int i, const int j, const int k )
+                                 const int Nx, const int Ny, const int Nz, const int i, const int j, const int k,
+                                 const real ScaleFactor )
 {
 
 // CC = cell-centered
@@ -1678,6 +1681,10 @@ real MHD_GetCellCenteredBEnergy( const real Bx_FC[], const real By_FC[], const r
    MHD_GetCellCenteredBField( B_CC, Bx_FC, By_FC, Bz_FC, Nx, Ny, Nz, i, j, k );
 
    BEngy = (real)0.5*( SQR(B_CC[MAGX]) + SQR(B_CC[MAGY]) + SQR(B_CC[MAGZ]) );
+
+#  ifdef COMOVING
+   BEngy *= ScaleFactor;
+#  endif
 
    return BEngy;
 

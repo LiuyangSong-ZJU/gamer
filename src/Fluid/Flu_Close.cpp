@@ -602,7 +602,8 @@ void CorrectUnphysical( const int lv, const int NPG, const int *PID0_List,
          const real Emag_Out = MHD_GetCellCenteredBEnergy( h_Mag_Array_F_Out[TID][MAGX],
                                                            h_Mag_Array_F_Out[TID][MAGY],
                                                            h_Mag_Array_F_Out[TID][MAGZ],
-                                                           PS2, PS2, PS2, ijk_out[0], ijk_out[1], ijk_out[2] );
+                                                           PS2, PS2, PS2, ijk_out[0], ijk_out[1], ijk_out[2],
+                                                           Time[lv] );
 #        else
          const real Emag_Out = NULL_REAL;
 #        endif
@@ -986,7 +987,8 @@ void CorrectUnphysical( const int lv, const int NPG, const int *PID0_List,
                                                                        FLU_NXT, FLU_NXT, FLU_NXT,
                                                                        ijk_out[0]+FLU_GHOST_SIZE,
                                                                        ijk_out[1]+FLU_GHOST_SIZE,
-                                                                       ijk_out[2]+FLU_GHOST_SIZE );
+                                                                       ijk_out[2]+FLU_GHOST_SIZE,
+                                                                       Time[lv] );
                   const real Emag_Update = Emag_Out;
 #                 else
                   const real Emag_In     = NULL_REAL;
@@ -1127,7 +1129,8 @@ void CorrectUnphysical( const int lv, const int NPG, const int *PID0_List,
                      const real Emag_tmp = MHD_GetCellCenteredBEnergy( h_Mag_Array_F_In[TID][MAGX],
                                                                        h_Mag_Array_F_In[TID][MAGY],
                                                                        h_Mag_Array_F_In[TID][MAGZ],
-                                                                       FLU_NXT, FLU_NXT, FLU_NXT, i, j, k );
+                                                                       FLU_NXT, FLU_NXT, FLU_NXT, i, j, k,
+                                                                       Time[lv] );
 #                    else
                      const real Emag_tmp = NULL_REAL;
 #                    endif

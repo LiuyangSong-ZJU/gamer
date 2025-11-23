@@ -922,7 +922,7 @@ void Refine( const int lv, const UseLBFunc_t UseLBFunc )
 //          compute magnetic energy
 #           ifdef MHD
             const real Emag = MHD_GetCellCenteredBEnergy( Mag_FData[MAGX], Mag_FData[MAGY], Mag_FData[MAGZ],
-                                                          PS2, PS2, PS2, i, j, k );
+                                                          PS2, PS2, PS2, i, j, k, Time[lv] );
 #           else
             const real Emag = NULL_REAL;
 #           endif

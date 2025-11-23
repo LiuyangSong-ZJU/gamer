@@ -1968,7 +1968,8 @@ void InterpolateGhostZone( const int lv, const int PID, real IntData_CC[], real 
          const int  j     = t % size_ij / FSize_CC[0];
          const int  k     = t / size_ij;
          const real Emag = MHD_GetCellCenteredBEnergy( FData_FC[MAGX], FData_FC[MAGY], FData_FC[MAGZ],
-                                                       FSize_CC[0], FSize_CC[1], FSize_CC[2], i, j, k );
+                                                       FSize_CC[0], FSize_CC[1], FSize_CC[2], i, j, k,
+                                                       Time[lv] );
 #        else
          const real Emag = NULL_REAL;
 #        endif

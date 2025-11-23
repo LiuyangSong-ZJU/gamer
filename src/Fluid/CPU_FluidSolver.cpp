@@ -51,7 +51,8 @@ void CPU_FluidSolver_MHM(
    const bool NormPassive, const int NNorm, const int c_NormIdx[],
    const bool FracPassive, const int NFrac, const int c_FracIdx[],
    const bool JeansMinPres, const real JeansMinPres_Coeff,
-   const EoS_t EoS, const MicroPhy_t MicroPhy );
+   const EoS_t EoS, const MicroPhy_t MicroPhy,
+   const int level );
 #elif ( FLU_SCHEME == CTU )
 void CPU_FluidSolver_CTU(
    const real   g_Flu_Array_In [][NCOMP_TOTAL][ CUBE(FLU_NXT) ],
@@ -264,7 +265,8 @@ void CPU_FluidSolver( const int lv, // ***新增传入参数***
                             NPatchGroup, dt, dh, StoreFlux, StoreElectric, LR_Limiter, MinMod_Coeff, MinMod_MaxIter, Time,
                             UsePot, ExtAcc, CPUExtAcc_Ptr, ExtAcc_AuxArray, MinDens, MinPres, MinEint,
                             DualEnergySwitch, NormPassive, NNorm, NormIdx, FracPassive, NFrac, FracIdx,
-                            JeansMinPres, JeansMinPres_Coeff, EoS, MicroPhy );
+                            JeansMinPres, JeansMinPres_Coeff, EoS, MicroPhy,
+                            lv );
 
 #     elif ( FLU_SCHEME == CTU )
 

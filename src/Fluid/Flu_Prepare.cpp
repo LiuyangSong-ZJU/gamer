@@ -205,7 +205,8 @@ void Flu_Prepare( const int lv, const double PrepTime,
             Emag = MHD_GetCellCenteredBEnergy( h_Mag_Array_F_In[TID][MAGX],
                                                h_Mag_Array_F_In[TID][MAGY],
                                                h_Mag_Array_F_In[TID][MAGZ],
-                                               FLU_NXT, FLU_NXT, FLU_NXT, i, j, k );
+                                               FLU_NXT, FLU_NXT, FLU_NXT, i, j, k,
+                                               Time[lv] );
 #           endif
 
             if (  Hydro_IsUnphysical( UNPHY_MODE_CONS, fluid, Emag,

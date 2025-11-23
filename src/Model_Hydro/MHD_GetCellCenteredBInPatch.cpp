@@ -95,7 +95,13 @@ real MHD_GetCellCenteredBEnergyInPatch( const int lv, const int PID, const int i
    const real *By_FC = amr->patch[MagSg][lv][PID]->magnetic[MAGY];
    const real *Bz_FC = amr->patch[MagSg][lv][PID]->magnetic[MAGZ];
 
-   return MHD_GetCellCenteredBEnergy( Bx_FC, By_FC, Bz_FC, PS1, PS1, PS1, i, j, k );
+#  ifdef COMOVING
+   const real SF = Time[lv];  // ScaleFactor, 直接访问全局变量
+#  else
+   const real SF = (real)1.0;
+#  endif
+
+   return MHD_GetCellCenteredBEnergy( Bx_FC, By_FC, Bz_FC, PS1, PS1, PS1, i, j, k, SF );
 
 } // FUNCTION : MHD_GetCellCenteredBEnergyInPatch
 

@@ -544,7 +544,8 @@ void Hydro_Pri2Con( const real In[], real Out[], const bool FracPassive, const i
 void MHD_GetCellCenteredBField( real B_CC[], const real Bx_FC[], const real By_FC[], const real Bz_FC[],
                                 const int Nx, const int Ny, const int Nz, const int i, const int j, const int k );
 real MHD_GetCellCenteredBEnergy( const real Bx_FC[], const real By_FC[], const real Bz_FC[],
-                                 const int Nx, const int Ny, const int Nz, const int i, const int j, const int k );
+                                 const int Nx, const int Ny, const int Nz, const int i, const int j, const int k,
+                                 const real ScaleFactor );
 void MHD_GetCellCenteredBFieldInPatch( real B[], const int lv, const int PID, const int i, const int j, const int k,
                                        const int MagSg );
 real MHD_GetCellCenteredBEnergyInPatch( const int lv, const int PID, const int i, const int j, const int k,

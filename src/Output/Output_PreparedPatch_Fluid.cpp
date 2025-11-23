@@ -161,7 +161,7 @@ void Output_PreparedPatch_Fluid( const int TLv, const int TPID,
          const real Emag = MHD_GetCellCenteredBEnergy( h_Mag_Array[TID][MAGX],
                                                        h_Mag_Array[TID][MAGY],
                                                        h_Mag_Array[TID][MAGZ],
-                                                       FLU_NXT, FLU_NXT, FLU_NXT, I, J, K );
+                                                       FLU_NXT, FLU_NXT, FLU_NXT, I, J, K, Time[TLv] ); //TODO: check
 #        else
          const real Emag = NULL_REAL;
 #        endif
