@@ -1275,6 +1275,7 @@ real Hydro_Con2Eint( const real Dens, const real MomX, const real MomY, const re
    Eint    = Engy - (real)0.5*( SQR(MomX) + SQR(MomY) + SQR(MomZ) ) / Dens;
 #  ifdef MHD
    Eint   -= Emag;
+   // printf("Emag = %f, Eint = %f\n", Emag, Eint);
 #  endif
 #  endif // #ifdef SRHD ... else ...
 

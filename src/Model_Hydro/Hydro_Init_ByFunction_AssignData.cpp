@@ -351,10 +351,14 @@ void Hydro_Init_ByFunction_AssignData( const int lv )
 
          for (int v=0; v<NCOMP_TOTAL; v++)   fluid[v] *= _NSub3;
 
-
+// ***做出修改：comoving情况下乘上 Time[lv]***
 //       add the magnetic energy
 #        ifdef MHD
+         # ifdef COMOVING
+         const real Emag = Time[lv] * MHD_GetCellCenteredBEnergyInPatch( lv, PID, i, j, k, amr->MagSg[lv] );
+         # else
          const real Emag = MHD_GetCellCenteredBEnergyInPatch( lv, PID, i, j, k, amr->MagSg[lv] );
+         # endif
          fluid[ENGY] += Emag;
 #        else
          const real Emag = NULL_REAL;

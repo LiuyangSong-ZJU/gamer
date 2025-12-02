@@ -358,20 +358,15 @@ void Hydro_AddSourceTerm_CCVar_FullStep( const real a_in, const real da_in, cons
     const real B_squared = SQR(Bx) + SQR(By) + SQR(Bz);
     
     // 2. 计算源项 dE/dt = 0.5 * (da/dt) * a * B²
-    const real source_term = (real)0.5 * a_in * da_in * B_squared;
-
+   //   const real source_term = (real)0.5 * a_in * da_in * B_squared;
+    const real source_term = (real)0.5 * da_in * B_squared / a_in;
+    // 看看da_in是多少
+   //  printf("a_in, da_in:%.10f, %.10f\n", a_in, da_in);
     // 3. 添加到能量项
     OutCell[ENGY] += source_term;
-    // 打印 a, da, B', source_term 以进行调试
-   //  printf("a: %f, da: %f\n", a_in, da_in); // 调试输出
-   //  printf("B squared: %f\n", B_squared); // 调试输出
-   //  printf("Added comoving MHD source term: %f\n", source_term); // 调试输出
-
-      //   const double val_before = (double)OutCell[ENGY];
-      //   const double val_after  = val_before + (double)source_term;
-      // //   OutCell[ENGY] = (real)val_after;
-      //   printf("AddSourceTerm(): value_after=%.12e (delta=%.12e)\n", val_after, val_after - val_before);
-
+    //  printf("a: %f, da: %f\n", a_in, da_in); // 调试输出
+    //  printf("B squared: %f\n", B_squared); // 调试输出
+    //  printf("Added comoving MHD source term: %f\n", source_term); // 调试输出
 
 
     

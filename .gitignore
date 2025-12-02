@@ -28,3 +28,7 @@ src/TestProblem/**
 src/Init/Init_TestProb.cpp
 
 configs
+
+env.sh
+gamer_MHDcosmology.bundle
+note
