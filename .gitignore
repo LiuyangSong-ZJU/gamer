@@ -32,3 +32,8 @@ configs
 env.sh
 gamer_MHDcosmology.bundle
 note
+
+MakefileDCUref
+sbatch.sh
+sbatchCPUtemplate.sh
+sbatchDCUtemplate.sh
