@@ -53,66 +53,67 @@
 #elif ( POT_GHOST_SIZE == 4 )
 #        define POT_BLOCK_SIZE_Z      5
 #elif ( POT_GHOST_SIZE == 5 )
-#  if   ( GPU_ARCH == FERMI )
-#     ifdef FLOAT8
-#        define POT_BLOCK_SIZE_Z      2
-#     else
-#        define POT_BLOCK_SIZE_Z      4
-#     endif
-#  elif ( GPU_ARCH == KEPLER )
-#     ifdef FLOAT8
-#        define POT_BLOCK_SIZE_Z      2
-#     else
-#        define POT_BLOCK_SIZE_Z      8
-#     endif
-#  elif ( GPU_ARCH == MAXWELL )
-#     ifdef FLOAT8
-#        define POT_BLOCK_SIZE_Z      2      // not optimized yet
-#     else
-#        define POT_BLOCK_SIZE_Z      4      // not optimized yet
-#     endif
-#  elif ( GPU_ARCH == PASCAL )
-#     ifdef FLOAT8
-#        define POT_BLOCK_SIZE_Z      2      // not optimized yet
-#     else
-#        define POT_BLOCK_SIZE_Z      4      // not optimized yet
-#     endif
-#  elif ( GPU_ARCH == VOLTA )
-#     ifdef FLOAT8
-#        define POT_BLOCK_SIZE_Z      2      // not optimized yet
-#     else
-#        define POT_BLOCK_SIZE_Z      4      // not optimized yet
-#     endif
-#  elif ( GPU_ARCH == TURING )
-#     ifdef FLOAT8
-#        define POT_BLOCK_SIZE_Z      2      // not optimized yet
-#     else
-#        define POT_BLOCK_SIZE_Z      4      // not optimized yet
-#     endif
-#  elif ( GPU_ARCH == AMPERE )
-#     ifdef FLOAT8
-#        define POT_BLOCK_SIZE_Z      2      // not optimized yet
-#     else
-#        define POT_BLOCK_SIZE_Z      4      // not optimized yet
-#     endif
-#  elif ( GPU_ARCH == ADA_LOVELACE )
-#     ifdef FLOAT8
-#        define POT_BLOCK_SIZE_Z      2      // not optimized yet
-#     else
-#        define POT_BLOCK_SIZE_Z      4      // not optimized yet
-#     endif
-#  elif ( GPU_ARCH == HOPPER )
-#     ifdef FLOAT8
-#        define POT_BLOCK_SIZE_Z      2      // not optimized yet
-#     else
-#        define POT_BLOCK_SIZE_Z      4      // not optimized yet
-#     endif
-#  else
-#        define POT_BLOCK_SIZE_Z      NULL_INT
-#     ifdef GPU
-#        error : UNKNOWN GPU_ARCH !!
-#     endif
-#  endif // GPU_ARCH
+// #  if   ( GPU_ARCH == FERMI )
+// #     ifdef FLOAT8
+// #        define POT_BLOCK_SIZE_Z      2
+// #     else
+// #        define POT_BLOCK_SIZE_Z      4
+// #     endif
+// #  elif ( GPU_ARCH == KEPLER )
+// #     ifdef FLOAT8
+// #        define POT_BLOCK_SIZE_Z      2
+// #     else
+// #        define POT_BLOCK_SIZE_Z      8
+// #     endif
+// #  elif ( GPU_ARCH == MAXWELL )
+// #     ifdef FLOAT8
+// #        define POT_BLOCK_SIZE_Z      2      // not optimized yet
+// #     else
+// #        define POT_BLOCK_SIZE_Z      4      // not optimized yet
+// #     endif
+// #  elif ( GPU_ARCH == PASCAL )
+// #     ifdef FLOAT8
+// #        define POT_BLOCK_SIZE_Z      2      // not optimized yet
+// #     else
+// #        define POT_BLOCK_SIZE_Z      4      // not optimized yet
+// #     endif
+// #  elif ( GPU_ARCH == VOLTA )
+// #     ifdef FLOAT8
+// #        define POT_BLOCK_SIZE_Z      2      // not optimized yet
+// #     else
+// #        define POT_BLOCK_SIZE_Z      4      // not optimized yet
+// #     endif
+// #  elif ( GPU_ARCH == TURING )
+// #     ifdef FLOAT8
+// #        define POT_BLOCK_SIZE_Z      2      // not optimized yet
+// #     else
+// #        define POT_BLOCK_SIZE_Z      4      // not optimized yet
+// #     endif
+// #  elif ( GPU_ARCH == AMPERE )
+// #     ifdef FLOAT8
+// #        define POT_BLOCK_SIZE_Z      2      // not optimized yet
+// #     else
+// #        define POT_BLOCK_SIZE_Z      4      // not optimized yet
+// #     endif
+// #  elif ( GPU_ARCH == ADA_LOVELACE )
+// #     ifdef FLOAT8
+// #        define POT_BLOCK_SIZE_Z      2      // not optimized yet
+// #     else
+// #        define POT_BLOCK_SIZE_Z      4      // not optimized yet
+// #     endif
+// #  elif ( GPU_ARCH == HOPPER )
+// #     ifdef FLOAT8
+// #        define POT_BLOCK_SIZE_Z      2      // not optimized yet
+// #     else
+// #        define POT_BLOCK_SIZE_Z      4      // not optimized yet
+// #     endif
+// #  else
+// #        define POT_BLOCK_SIZE_Z      NULL_INT
+// #     ifdef GPU
+// #        error : UNKNOWN GPU_ARCH !!
+// #     endif
+// #  endif // GPU_ARCH
+#     define POT_BLOCK_SIZE_Z      1
 #endif // POT_GHOST_SIZE
 
 
@@ -129,14 +130,14 @@
 //     show that residual_sum += (float)residual, where residual_sum is double, gives acceptable accuracy
 #  if ( GPU_ARCH == KEPLER  ||  GPU_ARCH == MAXWELL  ||  GPU_ARCH == PASCAL        ||  GPU_ARCH == VOLTA  ||  \
         GPU_ARCH == TURING  ||  GPU_ARCH == AMPERE   ||  GPU_ARCH == ADA_LOVELACE  ||  GPU_ARCH == HOPPER )
-#     define SOR_USE_SHUFFLE
+// #     define SOR_USE_SHUFFLE
 #  endif
 
 // use padding to reduce shared memory bank conflict (optimized for POT_GHOST_SIZE == 5 only)
 // --> does NOT work for FLOAT8 due to the lack of shared memory
 // --> does NOT work with FERMI GPUs because SOR_USE_PADDING requires POT_BLOCK_SIZE_Z == 8 but FERMI does NOT support that
 #  ifndef FLOAT8
-#     define SOR_USE_PADDING
+// #     define SOR_USE_PADDING
 #  endif
 #  endif // #if ( POT_GHOST_SIZE == 5 )
 
@@ -157,15 +158,15 @@
 
 // blockDim.x for the GPU Poisson solver
 #if   ( POT_GHOST_SIZE == 1 )
-#     define POT_BLOCK_SIZE_X      256
+#     define POT_BLOCK_SIZE_X      64
 #elif ( POT_GHOST_SIZE == 2 )
-#     define POT_BLOCK_SIZE_X      256
+#     define POT_BLOCK_SIZE_X      64
 #elif ( POT_GHOST_SIZE == 3 )
-#     define POT_BLOCK_SIZE_X      256
+#     define POT_BLOCK_SIZE_X      64
 #elif ( POT_GHOST_SIZE == 4 )
-#     define POT_BLOCK_SIZE_X      256
+#     define POT_BLOCK_SIZE_X      64
 #elif ( POT_GHOST_SIZE == 5 )
-#     define POT_BLOCK_SIZE_X      256
+#     define POT_BLOCK_SIZE_X      64
 #endif
 
 #endif // POT_SCHEME
@@ -173,20 +174,20 @@
 
 
 // blockDim.x for the GPU external potential solver
-#define EXTPOT_BLOCK_SIZE           256
+#define EXTPOT_BLOCK_SIZE           64
 
 
 // blockDim.x for the GPU Gravity solver
-#define GRA_BLOCK_SIZE              256
+#define GRA_BLOCK_SIZE              64
 
 
 // dt solver for gravity
-#define DT_GRA_BLOCK_SIZE           256
+#define DT_GRA_BLOCK_SIZE           64
 
 // use shuffle reduction in the KEPLER and later GPUs
 #if ( GPU_ARCH == KEPLER  ||  GPU_ARCH == MAXWELL  ||  GPU_ARCH == PASCAL        ||  GPU_ARCH == VOLTA  ||  \
       GPU_ARCH == TURING  ||  GPU_ARCH == AMPERE   ||  GPU_ARCH == ADA_LOVELACE  ||  GPU_ARCH == HOPPER )
-#   define DT_GRA_USE_SHUFFLE
+// #   define DT_GRA_USE_SHUFFLE
 #endif
 
 

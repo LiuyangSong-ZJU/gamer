@@ -9,7 +9,12 @@
 //-------------------------------------------------------------------------------------------------------
 void CUAPI_Synchronize()
 {
+
+   // printf("Rank %d syncing GPU...\n", MPI_Rank);
+
    CUDA_CHECK_ERROR(  cudaDeviceSynchronize()  );
+
+   // printf("Rank %d GPU sync done.\n", MPI_Rank);
 }
 
 #endif // #ifdef GPU

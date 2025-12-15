@@ -63,7 +63,7 @@ CUFFTDX_PATH := @@@CUFFTDX_PATH@@@
 # -------------------------------------------------------------------------------
 # CUDA source files (compiled with nvcc)
 GPU_FILE    := CUAPI_Asyn_FluidSolver.cu  CUAPI_DiagnoseDevice.cu  CUAPI_MemAllocate_Fluid.cu \
-               CUAPI_MemFree_Fluid.cu  CUAPI_SetMemSize.cu  CUAPI_SetCache.cu  CUAPI_SetDevice.cu \
+               CUAPI_MemFree_Fluid.cu  CUAPI_SetMemSize.cu  CUAPI_SetCache.cu  CUAPI_SetDeviceDCU.cu \
                CUAPI_Synchronize.cu  CUAPI_Asyn_dtSolver.cu  CUAPI_SetConstMemory.cu  CUAPI_SetConstMemory_EoS.cu \
                CUAPI_MemAllocate.cu
 
@@ -408,7 +408,7 @@ endif
 ifeq "$(filter -DGPU, $(SIMU_OPTION))" "-DGPU"
 LIB += -L$(CUDA_PATH)/lib64
 LIB += -Wl,-rpath,$(CUDA_PATH)/lib64
-LIB += -lcudart
+LIB += -lcudart -L/public/software/compiler/dtk/24.04.3/lib -lrccl
 endif
 
 ifeq "$(filter -DLAOHU, $(SIMU_OPTION))" "-DLAOHU"
@@ -631,8 +631,8 @@ ifeq "$(COMPILE_VERBOSE)" "1"
 	@printf "\nCompiling GAMER --> Successful!\n\n"; \
 	cp $(EXECUTABLE) ../bin/
 else
-	@$(CXX) -o $@ $^ $(OBJ_GPU_LINK) $(LIB) $(OPENMPFLAG); \
-	(if [ -e $@ ]; then \
+	@$(NVCC) -o $@ $^ $(OBJ_GPU_LINK) $(LIB) $(OPENMPFLAG) -L/public/software/mpi/intelmpi/2021.3.0/lib -lmpicxx -fopenmp -lmpi -DMPI; \
+   (if [ -e $@ ]; then \
 		printf "\nCompiling GAMER --> Successful!\n\n"; \
 		cp $(EXECUTABLE) ../bin/; \
 	else \

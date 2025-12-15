@@ -4,7 +4,7 @@
 *.o
 *.bin
 *~
-
+*.md
 bin/**
 src/generate_make.sh
 gamer
@@ -37,3 +37,7 @@ MakefileDCUref
 sbatch.sh
 sbatchCPUtemplate.sh
 sbatchDCUtemplate.sh
+
+gamer-new
+sbatchGPUtemplate.sh
+src/Makefile_base

@@ -95,7 +95,7 @@ real BlockReduction_WarpSync( real val )
 #     error : ERROR : WARP_SIZE != 32 !!
 #  endif
 
-   if ( ID < WARP_SIZE )
+   if ( ID < 32 )
    {
 //    declare volatile pointer to ensure that the operations are not reordered
       volatile real *s_Reduction_Volatile = s_Reduction;
