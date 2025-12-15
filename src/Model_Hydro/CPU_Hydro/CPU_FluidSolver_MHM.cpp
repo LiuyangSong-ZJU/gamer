@@ -280,7 +280,7 @@ static void Hydro_RiemannPredict( const real g_ConVar_In[][ CUBE(FLU_NXT) ],
 #ifdef __CUDACC__
 __global__
 void CUFLU_FluidSolver_MHM(
-   // const real   dTime, //***da, 查看src/Miscellaneous/Mis_dTime2dt.cpp***
+   const real   dTime, //***da, 查看src/Miscellaneous/Mis_dTime2dt.cpp***
    const real   g_Flu_Array_In [][NCOMP_TOTAL][ CUBE(FLU_NXT) ],
          real   g_Flu_Array_Out[][NCOMP_TOTAL][ CUBE(PS2) ],
          real   g_Mag_Array_In [][NCOMP_MAG][ FLU_NXT_P1*SQR(FLU_NXT) ], //***移除 const***

@@ -54,6 +54,7 @@ void CPU_FluidSolver_MHM(
    const EoS_t EoS, const MicroPhy_t MicroPhy );
 #elif ( FLU_SCHEME == CTU )
 void CPU_FluidSolver_CTU(
+   const real   dTime, //***da, 查看src/Miscellaneous/Mis_dTime2dt.cpp***
    const real   g_Flu_Array_In [][NCOMP_TOTAL][ CUBE(FLU_NXT) ],
          real   g_Flu_Array_Out[][NCOMP_TOTAL][ CUBE(PS2) ],
    const real   g_Mag_Array_In [][NCOMP_MAG][ FLU_NXT_P1*SQR(FLU_NXT) ],
@@ -268,7 +269,8 @@ void CPU_FluidSolver( const int lv, // ***新增传入参数***
 
 #     elif ( FLU_SCHEME == CTU )
 
-      CPU_FluidSolver_CTU ( h_Flu_Array_In, h_Flu_Array_Out, h_Mag_Array_In, h_Mag_Array_Out,
+      CPU_FluidSolver_CTU ( delta_a,
+                            h_Flu_Array_In, h_Flu_Array_Out, h_Mag_Array_In, h_Mag_Array_Out,
                             h_DE_Array_Out, h_Flux_Array, h_Ele_Array, h_Corner_Array, h_Pot_Array_USG,
                             h_PriVar, h_Slope_PPM, h_FC_Var, h_FC_Flux, h_FC_Mag_Half, h_EC_Ele,
                             NPatchGroup, dt, dh, StoreFlux, StoreElectric, LR_Limiter, MinMod_Coeff, Time,

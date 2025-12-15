@@ -42,7 +42,8 @@ void Hydro_ComputeFlux( const real g_FC_Var [][NCOMP_TOTAL_PLUS_MAG][ CUBE(N_FC_
 void Hydro_StoreIntFlux( const real g_FC_Flux[][NCOMP_TOTAL_PLUS_MAG][ CUBE(N_FC_FLUX) ],
                                real g_IntFlux[][NCOMP_TOTAL][ SQR(PS2) ],
                          const int NFlux );
-void Hydro_FullStepUpdate( const real g_Input[][ CUBE(FLU_NXT) ], const real g_Half_Pri[][ CUBE(FLU_NXT) ],
+void Hydro_FullStepUpdate( const real a, const real da, //***添加参数 a(Time), da(dTime) ***/
+                           const real g_Input[][ CUBE(FLU_NXT) ], const real g_Half_Pri[][ CUBE(FLU_NXT) ],
                            real g_Output[][ CUBE(PS2) ], char g_DE_Status[], const real g_FC_B[][ PS2P1*SQR(PS2) ],
                            const real g_Flux[][NCOMP_TOTAL_PLUS_MAG][ CUBE(N_FC_FLUX) ], const real dt,
                            const real dh, const real MinDens, const real MinEint, const real DualEnergySwitch,
@@ -181,6 +182,7 @@ void CUFLU_FluidSolver_CTU(
    const EoS_t EoS )
 #else
 void CPU_FluidSolver_CTU(
+   const real   dTime, //***da, 查看src/Miscellaneous/Mis_dTime2dt.cpp***
    const real   g_Flu_Array_In [][NCOMP_TOTAL][ CUBE(FLU_NXT) ],
          real   g_Flu_Array_Out[][NCOMP_TOTAL][ CUBE(PS2) ],
    const real   g_Mag_Array_In [][NCOMP_MAG][ FLU_NXT_P1*SQR(FLU_NXT) ],
@@ -330,7 +332,8 @@ void CPU_FluidSolver_CTU(
 
 //       8. full-step evolution of the fluid data
 //          --> CTU does not support reducing the min-mod coefficient
-         Hydro_FullStepUpdate( g_Flu_Array_In[P], g_PriVar_Half_1PG, g_Flu_Array_Out[P], g_DE_Array_Out[P],
+         Hydro_FullStepUpdate( Time, dTime, //***添加参数 a(Time), da(dTime) ***/
+                               g_Flu_Array_In[P], g_PriVar_Half_1PG, g_Flu_Array_Out[P], g_DE_Array_Out[P],
                                g_Mag_Array_Out[P], g_FC_Flux_1PG, dt, dh, MinDens, MinEint, DualEnergySwitch,
                                NormPassive, NNorm, c_NormIdx, &EoS, NULL, NULL_INT, NULL_INT );
 

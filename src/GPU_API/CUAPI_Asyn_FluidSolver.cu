@@ -17,9 +17,10 @@ __global__ void CUFLU_FluidSolver_RTVD(
 #elif ( FLU_SCHEME == MHM  ||  FLU_SCHEME == MHM_RP )
 __global__
 void CUFLU_FluidSolver_MHM(
+   const real   dTime, //***da, 查看src/Miscellaneous/Mis_dTime2dt.cpp***
    const real   g_Flu_Array_In [][NCOMP_TOTAL][ CUBE(FLU_NXT) ],
          real   g_Flu_Array_Out[][NCOMP_TOTAL][ CUBE(PS2) ],
-   const real   g_Mag_Array_In [][NCOMP_MAG][ FLU_NXT_P1*SQR(FLU_NXT) ],
+         real   g_Mag_Array_In [][NCOMP_MAG][ FLU_NXT_P1*SQR(FLU_NXT) ], //***移除 const***
          real   g_Mag_Array_Out[][NCOMP_MAG][ PS2P1*SQR(PS2) ],
          char   g_DE_Array_Out [][ CUBE(PS2) ],
          real   g_Flux_Array   [][9][NCOMP_TOTAL][ SQR(PS2) ],
@@ -47,7 +48,7 @@ __global__
 void CUFLU_FluidSolver_CTU(
    const real   g_Flu_Array_In [][NCOMP_TOTAL][ CUBE(FLU_NXT) ],
          real   g_Flu_Array_Out[][NCOMP_TOTAL][ CUBE(PS2) ],
-   const real   g_Mag_Array_In [][NCOMP_MAG][ FLU_NXT_P1*SQR(FLU_NXT) ],
+         real   g_Mag_Array_In [][NCOMP_MAG][ FLU_NXT_P1*SQR(FLU_NXT) ], //***移除 const***
          real   g_Mag_Array_Out[][NCOMP_MAG][ PS2P1*SQR(PS2) ],
          char   g_DE_Array_Out [][ CUBE(PS2) ],
          real   g_Flux_Array   [][9][NCOMP_TOTAL][ SQR(PS2) ],
@@ -259,7 +260,8 @@ extern cudaStream_t *Stream;
 //                GPU_NStream           : Number of CUDA streams for the asynchronous memory copy
 //                UseWaveFlag           : Determine whether to use wave or phase scheme
 //-------------------------------------------------------------------------------------------------------
-void CUAPI_Asyn_FluidSolver( real h_Flu_Array_In[][FLU_NIN ][ CUBE(FLU_NXT) ],
+void CUAPI_Asyn_FluidSolver(  const int lv, // ***新增传入参数***
+                             real h_Flu_Array_In[][FLU_NIN ][ CUBE(FLU_NXT) ],
                              real h_Flu_Array_Out[][FLU_NOUT][ CUBE(PS2) ],
                              real h_Mag_Array_In[][NCOMP_MAG][ FLU_NXT_P1*SQR(FLU_NXT) ],
                              real h_Mag_Array_Out[][NCOMP_MAG][ PS2P1*SQR(PS2) ],
@@ -282,11 +284,10 @@ void CUAPI_Asyn_FluidSolver( real h_Flu_Array_In[][FLU_NIN ][ CUBE(FLU_NXT) ],
                              const bool JeansMinPres, const real JeansMinPres_Coeff,
                              const int GPU_NStream, const bool UseWaveFlag )
 {
-
+   const real delta_a = dTime_AllLv[lv];
 // check
 #  ifdef GAMER_DEBUG
 #  if   ( MODEL == HYDRO )
-
 #  ifdef UNSPLIT_GRAVITY
    if ( UsePot )
    {
@@ -550,7 +551,8 @@ void CUAPI_Asyn_FluidSolver( real h_Flu_Array_In[][FLU_NIN ][ CUBE(FLU_NXT) ],
 #        elif ( FLU_SCHEME == MHM  ||  FLU_SCHEME == MHM_RP )
 
          CUFLU_FluidSolver_MHM <<< NPatch_per_Stream[s], BlockDim_FluidSolver, 0, Stream[s] >>>
-            ( d_Flu_Array_F_In  + UsedPatch[s],
+            ( delta_a,  //应该是delta_a (const real delta_a = dTime_AllLv[lv];)
+              d_Flu_Array_F_In  + UsedPatch[s],
               d_Flu_Array_F_Out + UsedPatch[s],
               d_Mag_Array_F_In  + UsedPatch[s],
               d_Mag_Array_F_Out + UsedPatch[s],
